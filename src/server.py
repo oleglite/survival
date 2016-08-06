@@ -6,7 +6,7 @@ from aiohttp import web, MsgType
 import settings
 import tools
 from handler import CommandHandler
-from game import Game
+from game.game import Game
 
 
 async def websocket_handler(request):
@@ -14,13 +14,15 @@ async def websocket_handler(request):
     await ws.prepare(request)
     handler = CommandHandler(game, ws)
 
+    tools.debug('Connected')
+
     async for msg in ws:
         if msg.tp == MsgType.text:
             await handler.process(msg)
         elif msg.tp == MsgType.error:
             print('ws connection closed with exception %s' % ws.exception())
         elif msg.tp == MsgType.closed:
-            break
+            handler.closed()
 
     ws.close()
     print('websocket connection closed')
@@ -58,5 +60,9 @@ if __name__ == '__main__':
         asyncio.ensure_future(init(game, loop)),
         asyncio.ensure_future(game_loop(game, loop)),
     ]
-    loop.run_until_complete(asyncio.wait(tasks))
+    try:
+        loop.run_until_complete(asyncio.wait(tasks))
+    except KeyboardInterrupt:
+        loop.stop()
+        print('Stopped')
     loop.close()

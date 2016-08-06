@@ -7,8 +7,8 @@ from exceptions import GameError
 
 
 def command(func):
-    async def wrapper(self, data):
-        result = await func(self, **data)
+    def wrapper(self, data):
+        result = func(self, **data)
         self.send_ok(data=result)
     return wrapper
 
@@ -18,7 +18,6 @@ class CommandHandler:
         self.game = game
         self.ws = ws
         self.commands = [
-            'close',
             'enter',
         ]
         self.user = None
@@ -30,19 +29,17 @@ class CommandHandler:
         command_name = msg_data.get('command')
         if command_name in self.commands:
             command_method = getattr(self, command_name)
-            await command_method(msg_data)
+            command_method(msg_data)
         elif self.user and command_name in self.user.get_commands():
-            self.process_user_command(command_name, msg_data)
+            self.user.set_command(msg_data)
         else:
             raise GameError('unknown command')
 
-    def process_user_command(self, command_name, msg_data):
-        command_method = getattr(self.user, command_name)
-        result = command_method(msg_data)
-        self.send_ok(data=result)
-
     def send(self, response):
-        self.ws.send_str(json.dumps(response))
+        try:
+            self.ws.send_str(json.dumps(response))
+        except RuntimeError:
+            self.closed()
 
     def send_ok(self, data=None):
         response = {'type': 'response'}
@@ -53,11 +50,15 @@ class CommandHandler:
     def push(self, data):
         self.send({'type': 'perspective', 'data': data})
 
-    async def close(self, data):
-        await self.ws.close()
-
     @command
-    async def enter(self, user_name, **kwargs):
+    def enter(self, user_name, **kwargs):
         self.user = self.game.login(user_name)  # TODO: add session
         self.game.enter(user_name)
         self.user.push_callback = self.push
+
+    def closed(self):
+        if self.user:
+            self.game.leave(self.user.user_name)
+            self.game.logout(self.user.user_name)
+            self.user.push_callback = None
+            self.user = None

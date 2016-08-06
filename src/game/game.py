@@ -2,9 +2,11 @@
 
 from collections import OrderedDict
 
-from world import World
-from creature import Creature
+from game.world import World
+from game.creature import Creature
+from game.user import User
 from exceptions import GameError
+from tools import Point
 
 
 class Game:
@@ -27,9 +29,19 @@ class Game:
         if user.creature:
             raise GameError('User "{}" has already entered'.format(user_name))
 
-        user.creature = Creature(user_name)
-        start_cell = self.world.get_cell(5, 5)
-        start_cell.enter(user.creature)
+        start_cell = self.world.get_cell(Point(5, 5))
+        creature = Creature(user_name, self.world)
+        creature.set_cell(start_cell)
+        user.set_creature(creature)
+
+    def leave(self, user_name):
+        if user_name not in self.users:
+            return
+
+        user = self.users[user_name]
+        if user.creature:
+            user.creature.set_cell(None)
+            user.set_creature(None)
 
     def turn(self):
         self.world.turn()   # turn world and cells
@@ -38,31 +50,3 @@ class Game:
 
         for user in self.users.values():    # send users states
             user.push()
-
-
-class User:
-    def __init__(self, user_name):
-        self.user_name = user_name
-        self.creature = None
-        self.command = None
-        self.push_callback = None
-
-    def set_command(self, command):
-        self.command = command
-
-    def set_push_callback(self, callback):
-        self.push_callback = callback
-
-    def turn(self):
-        self.creature.turn(self.command)
-
-    def push(self):
-        if not self.push_callback:
-            return
-
-        self.push_callback({
-            'perspective': self.creature.get_perspective()
-        })
-
-    def get_commands(self):
-        return self.creature.commands

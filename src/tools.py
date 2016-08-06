@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from exceptions import GameError
+from collections import namedtuple
+
+
+Point = namedtuple('Point', ['x', 'y'])
 
 
 class DIRECTIONS:
@@ -8,6 +11,19 @@ class DIRECTIONS:
     RIGHT = 1
     DOWN = 2
     LEFT = 3
+
+    ALL = [UP, RIGHT, DOWN, LEFT]
+
+
+_direction_offset_map = (
+    (DIRECTIONS.UP, Point(0, -1)),
+    (DIRECTIONS.RIGHT, Point(1, 0)),
+    (DIRECTIONS.DOWN, Point(0, 1)),
+    (DIRECTIONS.LEFT, Point(-1, 0)),
+)
+
+direction_to_offset = dict(_direction_offset_map)
+offset_to_direction = dict(map(lambda i: (i[1], i[0]), _direction_offset_map))
 
 
 def adjust(value, low, high):
@@ -18,14 +34,13 @@ def debug(msg):
     print('DEBUG: {}'.format(msg))
 
 
-def resolve_direction(direction, x, y):
-    if direction == DIRECTIONS.UP:
-        return x, y - 1
-    elif direction == DIRECTIONS.RIGHT:
-        return x + 1, y
-    elif direction == DIRECTIONS.DOWN:
-        return x, y + 1
-    elif direction == DIRECTIONS.LEFT:
-        return x - 1, y
+def get_adjacent_point(p, direction):
+    x, y = direction_to_offset[direction]
+    return Point(p.x + x, p.y + y)
 
-    raise GameError('got wrong direction {} when resolving for ({}, {})'.format(direction, x, y))
+
+def assign(*args):
+    res = args[0]
+    for obj in args[1:]:
+        res.update(obj)
+    return res
