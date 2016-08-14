@@ -37,7 +37,7 @@ class World:
                 yield cell
 
     def get_adjucent_cell(self, cell, direction=None, offset=None):
-        assert bool(direction) != bool(offset), 'Specify direction OR offset'
+        assert (direction is not None) != (offset is not None), 'Specify direction OR offset'
         if offset:
             direction = offset_to_direction[offset]
         return self.get_cell(get_adjacent_point(cell.point, direction))

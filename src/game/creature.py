@@ -30,7 +30,8 @@ class Creature:
         if self.cell:
             self.cell.leave(self)
         self.cell = cell
-        self.cell.enter(self)
+        if self.cell:
+            self.cell.enter(self)
 
     def turn(self, command):
         self.turn_needs()
