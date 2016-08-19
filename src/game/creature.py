@@ -16,6 +16,7 @@ def view_cells():
 class Creature:
     commands = [
         'move',
+        'eat',
     ]
 
     def __init__(self, id, world):
@@ -50,11 +51,6 @@ class Creature:
         if command_name in self.commands:
             getattr(self, command_name)(**command)
 
-    def move(self, direction, **kwargs):
-        new_cell = self.world.get_adjucent_cell(self.cell, direction=direction)
-        if new_cell:
-            self.set_cell(new_cell)
-
     def iter_view_cells(self):
         cur_x, cur_y = self.cell.point
         for x, y in view_cells():
@@ -75,3 +71,14 @@ class Creature:
 
     def __hash__(self):
         return hash(self.id)
+
+    # COMMANDS
+
+    def move(self, direction, **kwargs):
+        new_cell = self.world.get_adjucent_cell(self.cell, direction=direction)
+        if new_cell:
+            self.set_cell(new_cell)
+
+    def eat(self, **kwargs):
+        if self.cell.eat():
+            self.hunger -= settings.HUNGER_RESTORED_BY_EATING
