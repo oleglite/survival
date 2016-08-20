@@ -1,0 +1,14 @@
+.cell {
+    stroke: black;
+    fill: transparent;
+    stroke-width: 2;
+    stroke-linecap: round;
+}
+
+.label {
+    font-size: 17pt;
+}
+
+.food {
+    fill: #ee8800;
+}
