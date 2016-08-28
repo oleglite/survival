@@ -12,3 +12,11 @@ HUNGER_RESTORED_BY_EATING = 0.5
 
 MAX_FOOD_ON_CELL = 10
 MAX_GROW_FOOD_SPEED = 0.1
+
+
+DATABASE = {
+    'user': 'postgres',
+    'database': 'postgres',
+    'host': '127.0.0.1',
+    'password': 'postgres'
+}

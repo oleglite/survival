@@ -1,0 +1,21 @@
+version: '2'
+services:
+  db:
+    image: postgres
+
+  web:
+    build: guard
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./guard:/code
+    depends_on:
+     - db
+
+  nginx:
+    image: nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+     - web
