@@ -3,11 +3,15 @@ import React from 'react'
 
 class MDLComponent extends React.Component {
     componentDidMount() {
-        window.componentHandler.upgradeElement(this.root)
+        if (window.componentHandler) {
+            window.componentHandler.upgradeElement(this.root)
+        }
     }
 
     componentWillUnmount() {
-        window.componentHandler.downgradeElements(this.root)
+        if (window.componentHandler) {
+            window.componentHandler.downgradeElements(this.root)
+        }
     }
 }
 

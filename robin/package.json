@@ -10,11 +10,11 @@
     "babel-polyfill": "^6.9.1",
     "fastclick": "^1.0.6",
     "history": "^3.0.0",
-    "react": "^15.2.1",
-    "react-dom": "^15.2.1",
+    "react": "^15.3.1",
+    "react-dom": "^15.3.1",
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
-    "redux-thunk": "^2.1.0",
+    "redux-saga": "^0.11.1",
     "whatwg-fetch": "^1.0.0"
   },
   "devDependencies": {

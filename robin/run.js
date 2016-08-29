@@ -20,7 +20,6 @@ const config = {
   title: 'React Static Boilerplate',        // Your website title
   url: 'https://rsb.kriasoft.com',          // Your website URL
   project: 'react-static-boilerplate',      // Firebase project. See README.md -> How to Deploy
-  trackingID: 'UA-XXXXX-Y',                 // Google Analytics Site's ID
 };
 
 const tasks = new Map(); // The collection of automation tasks ('clean', 'build', 'publish', etc.)
@@ -89,21 +88,6 @@ tasks.set('build', () => Promise.resolve()
   .then(() => run('html'))
   .then(() => run('sitemap'))
 );
-
-//
-// Build and publish the website
-// -----------------------------------------------------------------------------
-tasks.set('publish', () => {
-  global.DEBUG = process.argv.includes('--debug') || false;
-  const firebase = require('firebase-tools');
-  return run('build')
-    .then(() => firebase.login({ nonInteractive: false }))
-    .then(() => firebase.deploy({
-      project: config.project,
-      cwd: __dirname,
-    }))
-    .then(() => { setTimeout(() => process.exit()); });
-});
 
 //
 // Build website and launch it in a browser for testing (default)

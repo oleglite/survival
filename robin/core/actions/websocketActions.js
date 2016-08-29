@@ -33,5 +33,5 @@ export function send(data) {
 }
 
 export function received(data) {
-    return dispatch => dispatch(handleReceived(data))
+    return handleReceived(data)
 }

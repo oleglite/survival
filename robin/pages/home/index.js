@@ -9,6 +9,7 @@ import Perspective from '../../components/Perspective/Perspective'
 import {onKeyDown} from '../../core/keyHandlers'
 import KeyHandler from '../../components/KeyHandler'
 import Stats from '../../components/Stats/Stats'
+import history from '../../core/history'
 
 function handleEnter() {
     store.dispatch(gameCommands.enter());
@@ -23,9 +24,11 @@ function handleDisconnect() {
 }
 
 class HomePage extends React.Component {
-  componentDidMount() {
-    document.title = 'Survive';
-  }
+    componentDidMount () {
+        if (!this.props.auth.isLoggedIn) {
+            history.push('/login')
+        }
+    }
 
     handleKeyDown (e) {
         const action = onKeyDown(e)
@@ -36,7 +39,12 @@ class HomePage extends React.Component {
     }
 
     render () {
-        const {socket, perspective} = this.props
+        const {dispatch, socket, perspective, auth} = this.props
+
+        if (!auth.isLoggedIn) {
+            return <Layout/>
+        }
+
         let buttonName;
         if (socket.connected) {
             buttonName = 'Disconnect';
@@ -64,14 +72,11 @@ class HomePage extends React.Component {
     }
 }
 
-HomePage.propTypes = {
-    socket: PropTypes.object.isRequired
-};
-
 function mapStateToProps(state) {
     return {
         socket: state.socket,
         perspective: state.perspective,
+        auth: state.auth,
     };
 }
 

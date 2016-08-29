@@ -19,11 +19,6 @@ class ErrorPage extends React.Component {
     error: React.PropTypes.object,
   };
 
-  componentDidMount() {
-    document.title = this.props.error && this.props.error.status === 404 ?
-      'Page Not Found' : 'Error';
-  }
-
   goBack = event => {
     event.preventDefault();
     history.goBack();

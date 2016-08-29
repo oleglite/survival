@@ -1,24 +1,31 @@
-import {createStore, applyMiddleware} from 'redux';
-import createLogger from 'redux-logger';
-import rootReducer from './reducers';
-import thunk from 'redux-thunk';
-import createWebsocket from './middleware/websocketMiddleware';
-import * as websocketActions from './actions/websocketActions';
+import {createStore, applyMiddleware} from 'redux'
+import createLogger from 'redux-logger'
+import createSagaMiddleware from 'redux-saga'
 
-const loggerMiddleware = createLogger();
-const websocketMiddleware = createWebsocket(websocketActions);
+import rootReducer from './reducers'
+import createWebsocket from './middleware/websocketMiddleware'
+import * as websocketActions from './actions/websocketActions'
+import sagas from './sagas'
+
+const loggerMiddleware = createLogger()
+const websocketMiddleware = createWebsocket(websocketActions)
+const sagaMiddleware = createSagaMiddleware()
 
 export function configureStore(initialState) {
     return createStore(
         rootReducer,
         initialState,
         applyMiddleware(
-            thunk,
+            sagaMiddleware,
             loggerMiddleware,
             websocketMiddleware
         )
-    );
+    )
 }
 
+
 const store = configureStore()
+
+sagaMiddleware.run(sagas)
+
 export default store
