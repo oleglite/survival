@@ -1,7 +1,6 @@
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 
-import store from '../../core/store';
 import Layout from '../../components/Layout';
 import LoginForm from '../../components/auth/LoginForm'
 import {authFieldChanged, login} from '../../core/actions/auth'

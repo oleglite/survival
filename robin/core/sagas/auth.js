@@ -1,10 +1,8 @@
-import {takeEvery, takeLatest} from 'redux-saga'
 import {take, put, call, fork, cancel, cancelled} from 'redux-saga/effects'
 
-import {GITHUB_CLIENT_ID} from './constants'
-import {LOGIN, LOGIN_DONE, LOGIN_FAILED, LOGOUT} from './actions/auth'
-import * as api from './api'
-import {show} from '../components/Toaster'
+import {LOGIN, LOGIN_DONE, LOGIN_FAILED, LOGOUT} from '../actions/auth'
+import * as api from '../api'
+import {show} from '../../components/Toaster'
 
 
 function* authorize(username, password) {
@@ -32,9 +30,4 @@ function* loginFlow() {
     }
 }
 
-
-function* sagas () {
-    yield fork(loginFlow)
-}
-
-export default sagas
+export default loginFlow

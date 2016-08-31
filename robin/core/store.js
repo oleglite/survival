@@ -5,7 +5,7 @@ import createSagaMiddleware from 'redux-saga'
 import rootReducer from './reducers'
 import createWebsocket from './middleware/websocketMiddleware'
 import * as websocketActions from './actions/websocketActions'
-import sagas from './sagas'
+import sagas from './sagas/index'
 
 const loggerMiddleware = createLogger()
 const websocketMiddleware = createWebsocket(websocketActions)

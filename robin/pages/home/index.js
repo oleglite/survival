@@ -9,7 +9,9 @@ import Perspective from '../../components/Perspective/Perspective'
 import {onKeyDown} from '../../core/keyHandlers'
 import KeyHandler from '../../components/KeyHandler'
 import Stats from '../../components/Stats/Stats'
-import history from '../../core/history'
+import {navigate} from '../../core/actions/routing'
+import {ROUTES} from '../../core/routes'
+
 
 function handleEnter() {
     store.dispatch(gameCommands.enter());
@@ -26,7 +28,7 @@ function handleDisconnect() {
 class HomePage extends React.Component {
     componentDidMount () {
         if (!this.props.auth.isLoggedIn) {
-            history.push('/login')
+            this.props.dispatch(navigate(ROUTES.LOGIN))
         }
     }
 
