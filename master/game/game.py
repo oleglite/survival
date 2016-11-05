@@ -10,14 +10,15 @@ from tools import Point
 
 
 class Game:
-    def __init__(self):
+    def __init__(self, time_getter):
         self.world = World()
         self.users = OrderedDict()  # because order of users may change result of turn
+        self.time_getter = time_getter
 
     def login(self, user_name):
         if user_name in self.users:
             raise GameError('User {} has already logged in'.format(user_name))
-        self.users[user_name] = User(user_name)
+        self.users[user_name] = User(user_name, self.time_getter)
         return self.users[user_name]
 
     def logout(self, user_name):
@@ -49,4 +50,4 @@ class Game:
             user.turn()
 
         for user in self.users.values():    # send users states
-            user.push()
+            user.push(forced=False)

@@ -54,8 +54,8 @@ async def init(game, loop):
 
 
 if __name__ == '__main__':
-    game = Game()
     loop = asyncio.get_event_loop()
+    game = Game(loop.time)
     tasks = [
         asyncio.ensure_future(init(game, loop)),
         asyncio.ensure_future(game_loop(game, loop)),

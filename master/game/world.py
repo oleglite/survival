@@ -19,7 +19,7 @@ class World:
     @staticmethod
     def make_cell(p):
         food = 5 if random.random() < 0.1 else 0
-        grow_food_speed = random.random() * 0.1 if food else 0
+        grow_food_speed = random.random() * settings.MAX_GROW_FOOD_SPEED if food else 0
         return Cell(p, food, grow_food_speed=grow_food_speed)
 
     def get_cell(self, point):
