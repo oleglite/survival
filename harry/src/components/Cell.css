@@ -1,0 +1,14 @@
+.Cell .Cell__rect {
+    stroke: #8b8b8b;
+    fill: #f9f9f9;
+    stroke-width: 2;
+    stroke-linecap: round;
+}
+
+.Cell .Cell__label {
+    font-size: 17pt;
+}
+
+.Cell .Cell__food {
+    fill: #ee8800;
+}

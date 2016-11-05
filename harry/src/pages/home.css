@@ -1,0 +1,29 @@
+.HomePage__content {
+    height: 100%;
+}
+.HomePage__content>div {
+    display: inline-block;
+    vertical-align: top;
+    height: 100%;
+}
+.HomePage__left_side {
+    width: 280px;
+    height: 100%;
+}
+.HomePage__left_side .GameSidebar {
+    margin: 40px auto !important;
+    width: 260px;
+}
+.HomePage__middle {
+    margin: 40px !important;
+}
+
+.HomePage__right_side {
+    position: absolute;
+    right: 0;
+    height: 100%;
+}
+.HomePage__right_side>div {
+    width: 250px;
+    margin: 40px !important;
+}
