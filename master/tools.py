@@ -44,3 +44,17 @@ def assign(*args):
     for obj in args[1:]:
         res.update(obj)
     return res
+
+
+class TimeConstraint(object):
+    def __init__(self, delay, time_getter):
+        self.delay = delay
+        self.time_getter = time_getter
+        self.last_time_acquired = 0
+
+    def acquire(self):
+        now = self.time_getter()
+        if (now - self.last_time_acquired) < self.delay:
+            return False
+        self.last_time_acquired = now
+        return True

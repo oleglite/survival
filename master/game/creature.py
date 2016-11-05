@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import settings
-from tools import Point, adjust, assign
+from tools import Point, adjust, assign, TimeConstraint
 
 
 def view_cells():
@@ -19,13 +19,15 @@ class Creature:
         'eat',
     ]
 
-    def __init__(self, id, world):
+    def __init__(self, id, world, time_getter):
         self.id = id
         self.cell = None
         self.world = world
+        self.time_getter = time_getter
 
         self.hunger = 0.0
         self.illness = 0.0
+        self.move_constraint = TimeConstraint(0.1, time_getter)
 
     def set_cell(self, cell):
         if self.cell:
@@ -75,6 +77,9 @@ class Creature:
     # COMMANDS
 
     def move(self, direction, **kwargs):
+        if not self.move_constraint.acquire():
+            return
+
         new_cell = self.world.get_adjucent_cell(self.cell, direction=direction)
         if new_cell:
             self.set_cell(new_cell)
@@ -82,3 +87,4 @@ class Creature:
     def eat(self, **kwargs):
         if self.cell.eat():
             self.hunger -= settings.HUNGER_RESTORED_BY_EATING
+            self.hunger = adjust(self.hunger, 0.0, 1.0)

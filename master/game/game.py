@@ -31,7 +31,7 @@ class Game:
             raise GameError('User "{}" has already entered'.format(user_name))
 
         start_cell = self.world.get_cell(Point(5, 5))
-        creature = Creature(user_name, self.world)
+        creature = Creature(user_name, self.world, self.time_getter)
         creature.set_cell(start_cell)
         user.set_creature(creature)
 
