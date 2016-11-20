@@ -47,14 +47,13 @@ def assign(*args):
 
 
 class TimeConstraint(object):
-    def __init__(self, delay, time_getter):
-        self.delay = delay
+    def __init__(self, time_getter):
         self.time_getter = time_getter
-        self.last_time_acquired = 0
+        self.acquired_till = 0
 
-    def acquire(self):
+    def acquire(self, delay):
         now = self.time_getter()
-        if (now - self.last_time_acquired) < self.delay:
+        if self.acquired_till >= now:
             return False
-        self.last_time_acquired = now
+        self.acquired_till = now + delay
         return True

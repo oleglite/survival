@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import settings
+from master.communication.messages import construct
 
 
 class User:
@@ -35,9 +36,10 @@ class User:
         )
 
         if forced or is_time_to_push:
-            self.push_callback({
-                'perspective': self.creature.get_perspective()
-            })
+            self.push_callback(construct(
+                perspective=self.creature.get_perspective(),
+                is_dead=not self.creature.alive
+            ))
 
     def get_commands(self):
         return self.creature.commands

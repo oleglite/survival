@@ -2,8 +2,8 @@
 
 import json
 
-import tools
-from exceptions import GameError
+from master.utils import tools
+from master.utils.exceptions import GameError
 
 
 def command(func):
@@ -48,7 +48,7 @@ class CommandHandler:
         self.send(response)
 
     def push(self, data):
-        self.send({'type': 'perspective', 'data': data})
+        self.send(data)
 
     @command
     def enter(self, user_name, **kwargs):

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import settings
-from tools import Point, adjust, assign, TimeConstraint
+from master.utils.tools import Point, adjust, assign, TimeConstraint
 
 
 def view_cells():
@@ -27,7 +27,14 @@ class Creature:
 
         self.hunger = 0.0
         self.illness = 0.0
-        self.move_constraint = TimeConstraint(0.1, time_getter)
+        self.action_constraint = TimeConstraint(time_getter)
+
+        self.move_delay = 0.1
+        self.eat_delay = 1
+
+    @property
+    def alive(self):
+        return self.illness < 1
 
     def set_cell(self, cell):
         if self.cell:
@@ -37,6 +44,9 @@ class Creature:
             self.cell.enter(self)
 
     def turn(self, command):
+        if not self.alive:
+            return
+
         self.turn_needs()
         if command:
             self.turn_command(command)
@@ -60,7 +70,7 @@ class Creature:
 
     def get_perspective(self):
         perspective = {
-            'state': {
+            'stats': {
                 'hunger': self.hunger,
                 'illness': self.illness
             },
@@ -77,7 +87,7 @@ class Creature:
     # COMMANDS
 
     def move(self, direction, **kwargs):
-        if not self.move_constraint.acquire():
+        if not self.action_constraint.acquire(self.move_delay):
             return
 
         new_cell = self.world.get_adjucent_cell(self.cell, direction=direction)
@@ -85,6 +95,9 @@ class Creature:
             self.set_cell(new_cell)
 
     def eat(self, **kwargs):
+        if not self.action_constraint.acquire(self.eat_delay):
+            return
+
         if self.cell.eat():
             self.hunger -= settings.HUNGER_RESTORED_BY_EATING
             self.hunger = adjust(self.hunger, 0.0, 1.0)

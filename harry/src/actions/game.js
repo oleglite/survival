@@ -2,6 +2,7 @@ import {actions as socket} from './socket'
 
 export const ACTIONS = {
     PERSPECTIVE_UPDATED: 'game/PERSPECTIVE_UPDATED',
+    DEATH: 'game/DEATH',
 }
 
 const DIRECTION = {
@@ -20,6 +21,7 @@ export const actions = {
     eat: () => socket.send({command: 'eat'}),
 
     perspectiveUpdated: perspective => ({type: ACTIONS.PERSPECTIVE_UPDATED, perspective}),
+    death: () => ({type: ACTIONS.DEATH})
 }
 
 export function keyToAction(key) {

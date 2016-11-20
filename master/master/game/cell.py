@@ -3,7 +3,7 @@
 from uuid import uuid4
 
 import settings
-from tools import adjust
+from master.utils.tools import adjust
 
 
 class Cell:

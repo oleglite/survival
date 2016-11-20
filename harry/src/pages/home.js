@@ -9,6 +9,7 @@ import KeyHandler from '../components/KeyHandler'
 import {keyToAction} from '../actions/game'
 import GameSidebar from '../components/GameSidebar'
 import GameHelp from '../components/GameHelp'
+import Notifications from '../components/Notifications'
 
 
 class HomePage extends Component {
@@ -28,14 +29,22 @@ class HomePage extends Component {
                     </div>
                     <div className="HomePage__item HomePage__middle">
                     {
-                        !this.props.connected ? null : [
+                        !(this.props.connected && this.props.alive) ? null : [
                             <KeyHandler key='keyHanlder' onKeyDown={this.props.onKeyDown}/>,
                             <Perspective key='perspective' perspective={this.props.perspective}/>,
                         ]
                     }
+                    {
+                        !(this.props.connected && !this.props.alive) ? null : (
+                            <div>You are dead! Sorry...</div>
+                        )
+                    }
                     </div>
                     <div className="HomePage__item HomePage__right_side">
                         <GameHelp/>
+                    </div>
+                    <div className="HomePage__notifications">
+                        <Notifications items={this.props.notifications}/>
                     </div>
                 </div>
             </Layout>
@@ -49,7 +58,9 @@ function mapStateToProps(state) {
         connecting: state.socket.connecting,
         url: state.socket.url,
         perspective: state.game.perspective,
-        stats: state.game.perspective.state
+        alive: state.game.alive,
+        stats: state.game.perspective.stats,
+        notifications: state.notifications.items
     }
 }
 

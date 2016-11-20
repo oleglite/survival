@@ -1,9 +1,10 @@
 import {ACTIONS} from '../actions/game'
 
 const INITIAL_GAME = {
+    alive: true,
     perspective: {
         cells: [],
-        state: {
+        stats: {
             hunger: 0,
             illness: 0,
         }
@@ -17,6 +18,11 @@ export default function(state=INITIAL_GAME, action) {
             return {
                 ...state,
                 perspective: action.perspective,
+            }
+        case ACTIONS.DEATH:
+            return {
+                ...state,
+                alive: false
             }
         default:
             return state

@@ -5,7 +5,7 @@ import {Segment, Header, Table} from 'semantic-ui-react'
 function GameHelp() {
     return (
         <div className="GameHelp">
-            <Header size={3}>Game Help</Header>
+            <Header size="small">Game Help</Header>
             <Table>
                 <Table.Row>
                     <Table.Cell>arrows</Table.Cell>

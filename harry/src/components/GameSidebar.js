@@ -9,7 +9,7 @@ function GameSidebar({connected, connecting, url, connectClicked, disconnectClic
 
     if (connected) {
         items.push(
-            <Menu.Item>
+            <Menu.Item key="stats">
                 <Menu.Header>Stats</Menu.Header>
 
                 <Menu.Menu>
@@ -30,7 +30,7 @@ function GameSidebar({connected, connecting, url, connectClicked, disconnectClic
     }
 
     items.push(
-        <Menu.Item name={connectionButton} onClick={() => {
+        <Menu.Item key="connectionButton" name={connectionButton} onClick={() => {
             if (connected) {
                 disconnectClicked()
             } else if (!connecting) {

@@ -4,6 +4,7 @@ import {ACTIONS, actions} from '../actions/auth'
 import {actions as routingActions} from '../actions/routing'
 import * as api from '../api'
 import {ROUTES} from '../pages/index'
+import * as notifications from './notifications'
 
 
 function* authorize(username, password) {
@@ -13,6 +14,7 @@ function* authorize(username, password) {
         yield put(routingActions.navigate(ROUTES.HOME))
     } catch (error) {
         yield put(actions.loginFailed(error))
+        yield call(notifications.error, 'Failed to login')
     } finally {
         if (yield cancelled()) {
             // ... put special cancellation handling code here

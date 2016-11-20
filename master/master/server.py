@@ -3,10 +3,10 @@
 import asyncio
 from aiohttp import web, MsgType
 
-import settings
-import tools
-from handler import CommandHandler
-from game.game import Game
+from master import settings
+from master.utils import tools
+from master.communication.handler import CommandHandler
+from master.game.game import Game
 
 
 async def websocket_handler(request):

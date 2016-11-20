@@ -2,11 +2,11 @@
 
 from collections import OrderedDict
 
-from game.world import World
-from game.creature import Creature
-from game.user import User
-from exceptions import GameError
-from tools import Point
+from master.game.world import World
+from master.game.creature import Creature
+from master.game.user import User
+from master.utils.exceptions import GameError
+from master.utils.tools import Point
 
 
 class Game:

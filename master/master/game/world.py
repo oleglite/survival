@@ -3,8 +3,8 @@
 import random
 
 import settings
-from tools import Point, get_adjacent_point, offset_to_direction
-from game.cell import Cell
+from master.utils.tools import Point, get_adjacent_point, offset_to_direction
+from master.game.cell import Cell
 
 
 class World:

@@ -27,3 +27,10 @@
     width: 250px;
     margin: 40px !important;
 }
+
+.HomePage__notifications {
+    position: fixed;
+    right: 20px;
+    top: 20px;
+    width: 300px;
+}
